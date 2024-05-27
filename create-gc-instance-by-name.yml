@@ -84,7 +84,7 @@
                 type: ONE_TO_ONE_NAT
             subnetwork: "{{ vpcsubnet }}"
         metadata:
-          ssh-keys: "{{ user }}:{{ lookup('file', '/home/{{ user }}/.ssh/id_rsa.pub') }}"
+          ssh-keys: "root:{{ lookup('file', '/home/{{ user }}/.ssh/id_rsa.pub') }}"
           delegate_to: localhost
         zone: "{{ gcp_zone }}"
         project: "{{ gcp_project }}"

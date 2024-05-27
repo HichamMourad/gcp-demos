@@ -91,7 +91,9 @@
                 type: ONE_TO_ONE_NAT
             subnetwork: "{{ vpcsubnet }}"
         metadata:
-          ssh-keys: "{{ rhel_ssh_public_keys }}"
+          ssh-keys: "{{ rhel_public_key }}"
+          authorized_keys: "/home/{{ rhel_user }}/.ssh/authorized_keys"
+#          ssh-keys: "{{ rhel_ssh_public_keys }}"
 #          ssh-keys: "root:{{ lookup('file', '/home/{{ user }}/.ssh/id_rsa.pub') }}"
 
         zone: "{{ gcp_zone }}"

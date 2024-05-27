@@ -61,13 +61,6 @@
         state: present
       register: vmip
 
-    - name: Setup public keys
-      when: rhel_public_key is defined
-      ansible.builtin.set_fact:
-        rhel_ssh_public_keys:
-          - path: "/home/{{ rhel_user }}/.ssh/authorized_keys"
-            key_data: "{{ rhel_public_key }}"
-
     - name: Create the VM instances
       google.cloud.gcp_compute_instance:
         name: "{{ vm_name }}"
@@ -90,12 +83,6 @@
                 nat_ip: "{{ vmip }}"
                 type: ONE_TO_ONE_NAT
             subnetwork: "{{ vpcsubnet }}"
-        metadata:
-          ssh-keys: "{{ rhel_public_key }}"
-          authorized_keys: "/home/{{ rhel_user }}/.ssh/authorized_keys"
-#          ssh-keys: "{{ rhel_ssh_public_keys }}"
-#          ssh-keys: "root:{{ lookup('file', '/home/{{ user }}/.ssh/id_rsa.pub') }}"
-
         zone: "{{ gcp_zone }}"
         project: "{{ gcp_project }}"
         auth_kind: serviceaccount

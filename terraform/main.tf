@@ -7,7 +7,7 @@ terraform {
     }
   }
 
-  backend "s3" {}
+  backend "gcs" {}
 }
 
 # Configure the Google Cloud provider

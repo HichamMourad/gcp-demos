@@ -1,0 +1,11 @@
+---
+- name: Deploy resources via Terraform
+  hosts: localhost
+  tasks:
+    - name: Terraform apply
+      cloud.terraform.terraform:
+        project_path: ../terraform-with-aap-provider/
+        state: present
+        force_init: true
+        backend_config_files:
+          - "{{ lookup('ansible.builtin.env', 'TF_BACKEND_CONFIG_FILE') }}" # Note use of the env variable set by the Terraform backend credential to store the backend configuration file path

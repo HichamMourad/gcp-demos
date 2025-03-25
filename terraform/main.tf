@@ -31,7 +31,7 @@ resource "google_compute_instance" "vm_instance" {
   }
 
   network_interface {
-    subnetwork = "network-instance"
+    subnetwork = "projects/red-hat-mbu/regions/us-east1/subnetworks/instancenet"
   }
 }
 

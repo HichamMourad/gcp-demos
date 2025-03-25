@@ -33,6 +33,7 @@ resource "google_compute_instance" "vm_instance" {
   network_interface {
     network = "network-instance"
   }
+}
 
 # Output the VM's public IP
 output "vm_public_ip" {

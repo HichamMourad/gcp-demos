@@ -3,7 +3,7 @@ terraform {
     
     google = {
       source = "hashicorp/google"
-      version = "6.26.0"
+      version = "~> 5.10.0"
     }
   }
 
@@ -31,8 +31,13 @@ resource "google_compute_instance" "vm_instance" {
   }
 
   network_interface {
-    network = "network-instance"
+    subnetwork = "network-instance"
   }
+}
+
+# Output the VM's internal IP
+output "vm_internal_ip" {
+  value = google_compute_instance.vm_instance.network_interface[0].network_ip
 }
 
 ## Output the VM's public IP

@@ -11,7 +11,7 @@
     google.cloud.gcp_vertexai_endpoint_with_model_garden_deployment:
       state: absent
       publisher_model_name: "publishers/google/models/paligemma@paligemma-224-float32"
-      display_name: "{{ resource_name }}-endpoint"
+      display_name: "{{ resource_name }}-my-model"
       endpoint_config:
         endpoint_display_name: "{{ resource_name }}-endpoint"
       model_config:

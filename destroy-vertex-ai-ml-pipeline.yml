@@ -7,12 +7,6 @@
     resource_name: "vertex-ai"
     
   tasks:
-  - name: Destroy Vertex AI NETWORK
-    google.cloud.gcp_compute_network:
-      name: "{{ resource_name }}-network"
-      state: absent
-      project: "{{ gcp_project }}"
-
   - name: Destroy Vertex AI endpoint with Model Garden deployment
     google.cloud.gcp_vertexai_endpoint_with_model_garden_deployment:
       state: absent
@@ -23,4 +17,10 @@
       model_config:
         model_display_name: "{{ resource_name }}-model"
       location: "{{ gcp_region }}"
+      project: "{{ gcp_project }}"
+
+  - name: Destroy Vertex AI NETWORK
+    google.cloud.gcp_compute_network:
+      name: "{{ resource_name }}-network"
+      state: absent
       project: "{{ gcp_project }}"

@@ -19,8 +19,10 @@
     google.cloud.gcp_vertexai_endpoint_with_model_garden_deployment:
       state: present
       publisher_model_name: publishers/google/models/paligemma@paligemma-224-float32
-      display_name: "{{ resource_name }}-endpoint"
+      endpoint_config:
+        endpoint_display_name: "{{ resource_name }}-endpoint"
       model_config:
+        model_display_name: "{{ resource_name }}-model"
         accept_eula: true
       location: "{{ gcp_region }}"
       project: "{{ gcp_project }}"
@@ -36,12 +38,16 @@
 #     google.cloud.gcp_vertexai_endpoint_with_model_garden_deployment:
 #       state: absent
 #       publisher_model_name: publishers/google/models/paligemma@paligemma-224-float32
-#       display_name: "{{ resource_name }}-endpoint"
+#       endpoint_config:
+#         endpoint_display_name: "{{ resource_name }}-endpoint"
+#       model_config:
+#         model_display_name: "{{ resource_name }}-model"
+#         accept_eula: true
 #       location: "{{ gcp_region }}"
 #       project: "{{ gcp_project }}"
 
 #   - name: Destroy test network
 #     google.cloud.gcp_compute_network:
-#       name: "{{ resource_name }}-network"
 #       state: absent
+#       name: "{{ resource_name }}-network"
 #       project: "{{ gcp_project }}"

@@ -7,20 +7,20 @@
     resource_name: "vertex-ai"
     
   tasks:
-  - name: Create Vertex AI NETWORK
-    google.cloud.gcp_compute_network:
-      name: "{{ resource_name }}-network"
-      state: present
-      auto_create_subnetworks: true
-      project: "{{ gcp_project }}"
+  # - name: Create Vertex AI NETWORK
+  #   google.cloud.gcp_compute_network:
+  #     name: "{{ resource_name }}-network"
+  #     state: present
+  #     auto_create_subnetworks: true
+  #     project: "{{ gcp_project }}"
 
   - name: Deploy Vertex AI endpoint with Model Garden deployment
     google.cloud.gcp_vertexai_endpoint_with_model_garden_deployment:
       state: present
       publisher_model_name: "publishers/google/models/paligemma@paligemma-224-float32"
       display_name: "{{ resource_name }}-endpoint"
-      endpoint_config:
-        endpoint_display_name: "{{ resource_name }}-endpoint"
+      # endpoint_config:
+      #   endpoint_display_name: "{{ resource_name }}-endpoint"
       model_config:
         model_display_name: "{{ resource_name }}-model"
         accept_eula: true

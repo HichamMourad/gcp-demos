@@ -4,32 +4,44 @@
   vars:
     gcp_project: "my-gcp-project"
     gcp_region: "us-east1"
+    resource_name: "vertex-ai"
     
   tasks:
-    - name: Create a Vertex AI Image Dataset
-      google.cloud.gcp_vertexai_dataset:
-        display_name: "production_image_dataset"
-        metadata_schema_uri: "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml"
-        region: "{{ gcp_region }}"
-        project: "{{ gcp_project }}"
-        auth_kind: "application"
-        state: present
+  - name: Create Vertex AI NETWORK
+    google.cloud.gcp_compute_network:
+      name: "{{ resource_name }}-network"
+      state: present
+      auto_create_subnetworks: true
+      project: "{{ gcp_project }}"
+    register: _network
 
-    - name: Register a trained Vertex AI Model
-      google.cloud.gcp_vertexai_model:
-        display_name: "my_predictive_model_v1"
-        artifact_uri: "gs://my-ml-artifacts-bucket/models/v1/"
-        container_spec:
-          image_uri: "us-docker.pkg.dev/vertex-ai/prediction/tf2-cpu.2-8:latest"
-        region: "{{ gcp_region }}"
-        project: "{{ gcp_project }}"
-        auth_kind: "application"
-        state: present
+  - name: Deploy Vertex AI endpoint with Model Garden deployment
+    google.cloud.gcp_vertexai_endpoint_with_model_garden_deployment:
+      state: present
+      publisher_model_name: publishers/google/models/paligemma@paligemma-224-float32
+      display_name: "{{ resource_name }}-endpoint"
+      model_config:
+        accept_eula: true
+      location: "{{ gcp_region }}"
+      project: "{{ gcp_project }}"
+    register: _mydeploy
 
-    - name: Provision a Vertex AI Serving Endpoint
-      google.cloud.gcp_vertexai_endpoint:
-        display_name: "production_serving_endpoint"
-        region: "{{ gcp_region }}"
-        project: "{{ gcp_project }}"
-        auth_kind: "application"
-        state: present
+  - name: Run assertions
+    ansible.builtin.assert:
+      that:
+        - _mydeploy.changed == true
+
+
+#   - name: Destroy Basic Model
+#     google.cloud.gcp_vertexai_endpoint_with_model_garden_deployment:
+#       state: absent
+#       publisher_model_name: publishers/google/models/paligemma@paligemma-224-float32
+#       display_name: "{{ resource_name }}-endpoint"
+#       location: "{{ gcp_region }}"
+#       project: "{{ gcp_project }}"
+
+#   - name: Destroy test network
+#     google.cloud.gcp_compute_network:
+#       name: "{{ resource_name }}-network"
+#       state: absent
+#       project: "{{ gcp_project }}"

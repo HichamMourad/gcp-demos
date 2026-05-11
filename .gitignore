@@ -3,3 +3,5 @@
 *.gz
 .vscode/*
 settings.json
+.devcontainer/*
+.venv/*
